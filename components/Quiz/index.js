@@ -1,15 +1,23 @@
-import React, {useState, useEffect} from 'react';
-import {Alert, Button, View} from 'react-native';
-import {Text, ContentTextWrapperCenter, ContentWrapperCenter} from '../Globals';
-import {connect} from 'react-redux';
+import React, { useState, useEffect } from "react";
+import { Alert, Button, View } from "react-native";
+import {
+  Text,
+  ContentTextWrapperCenter,
+  ContentWrapperCenter,
+} from "../Globals";
+import { connect } from "react-redux";
+import {
+  clearLocalNotification,
+  setLocalNotifications,
+} from "../../utils/helpers";
 
-const Quiz = ({rootNavigation, deck, rootRoute, navigation, dispatch}) => {
+const Quiz = ({ rootNavigation, deck, rootRoute, navigation, dispatch }) => {
   const [currentIndex, setIndex] = useState(0);
   const [score, setScore] = useState(0);
   const [isLast, setIsLast] = useState(false);
 
   useEffect(() => {
-    const unsubscribe = navigation.addListener('blur', () => {
+    const unsubscribe = navigation.addListener("blur", () => {
       setIndex(0);
       setIsLast(false);
       setScore(0);
@@ -21,25 +29,26 @@ const Quiz = ({rootNavigation, deck, rootRoute, navigation, dispatch}) => {
     tabBarVisible: false,
   });
   navigation.setOptions({
-    headerTitle: `${deck?.title} Quiz` || '',
+    headerTitle: `${deck?.title} Quiz` || "",
   });
 
-  const {questions} = deck;
+  const { questions } = deck;
 
-  const handleAnswer = option => {
-    if (option === 'correct') {
-      setScore(prevScore => prevScore + 1);
+  const handleAnswer = (option) => {
+    if (option === "correct") {
+      setScore((prevScore) => prevScore + 1);
     }
     if (questions[currentIndex + 1] !== undefined) {
-      setIndex(prevIdx => prevIdx + 1);
+      setIndex((prevIdx) => prevIdx + 1);
     } else {
       setIsLast(true);
     }
   };
 
   useEffect(() => {
-    const navigate = score => {
-      navigation.navigate('Final Score', {
+    const navigate = (score) => {
+      clearLocalNotification().then(setLocalNotifications);
+      navigation.navigate("Final Score", {
         score,
         deckId: deck.id,
         total: questions.length,
@@ -56,12 +65,13 @@ const Quiz = ({rootNavigation, deck, rootRoute, navigation, dispatch}) => {
         <ContentTextWrapperCenter>
           <Text
             style={{
-              textAlign: 'center',
+              textAlign: "center",
               paddingLeft: 20,
               paddingRight: 20,
             }}
             color="black"
-            size="20px">
+            size="20px"
+          >
             Sorry, you cannot take a quiz because there are no cards in this
             deck.
           </Text>
@@ -74,46 +84,51 @@ const Quiz = ({rootNavigation, deck, rootRoute, navigation, dispatch}) => {
     <ContentWrapperCenter>
       <Text
         style={{
-          textAlign: 'left',
+          textAlign: "left",
           marginTop: 20,
         }}
         color="black"
-        size="20px">
+        size="20px"
+      >
         Question {currentIndex + 1} out of {questions.length}
       </Text>
       <ContentTextWrapperCenter>
         <Text
           style={{
-            textAlign: 'center',
+            textAlign: "center",
           }}
           color="black"
-          size="30px">
+          size="30px"
+        >
           {questions[currentIndex].question}
         </Text>
         <Text
           onPress={() => {
-            Alert.alert('Answer', questions[currentIndex].answer);
+            Alert.alert("Answer", questions[currentIndex].answer);
           }}
           style={{
             marginTop: 20,
           }}
           color="red"
-          size="15px">
+          size="15px"
+        >
           View Answer
         </Text>
         <View
           style={{
             marginTop: 10,
-          }}>
+          }}
+        >
           <Button
-            onPress={() => handleAnswer('correct')}
+            onPress={() => handleAnswer("correct")}
             title="  Correct   "
           />
         </View>
         <View
           style={{
             marginTop: 10,
-          }}>
+          }}
+        >
           <Button
             onPress={() => handleAnswer()}
             color="black"
@@ -125,9 +140,9 @@ const Quiz = ({rootNavigation, deck, rootRoute, navigation, dispatch}) => {
   );
 };
 
-const mapStateToProps = ({decks}, {route}) => {
-  const {params} = route;
-  const deck = Object.values(decks).find(deck => deck.id === params.deckId);
+const mapStateToProps = ({ decks }, { route }) => {
+  const { params } = route;
+  const deck = Object.values(decks).find((deck) => deck.id === params.deckId);
   return {
     deck,
   };

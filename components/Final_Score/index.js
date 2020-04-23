@@ -1,6 +1,10 @@
-import React from 'react';
-import {View, Button} from 'react-native';
-import {ContentTextWrapperCenter, ContentWrapperCenter, Text} from '../Globals';
+import React from "react";
+import { View, Button } from "react-native";
+import {
+  ContentTextWrapperCenter,
+  ContentWrapperCenter,
+  Text,
+} from "../Globals";
 
 const FinalScore = ({
   rootNavigation,
@@ -13,11 +17,9 @@ const FinalScore = ({
     tabBarVisible: false,
   });
   navigation.setOptions({
-    headerTitle: 'Results',
+    headerTitle: "Results",
   });
-  const {score, deckId, total} = route.params;
-  console.log(route);
-
+  const { score, deckId, total } = route.params;
   return (
     <ContentWrapperCenter>
       <ContentTextWrapperCenter>
@@ -30,10 +32,11 @@ const FinalScore = ({
         <View
           style={{
             marginTop: 10,
-          }}>
+          }}
+        >
           <Button
             onPress={() => {
-              navigation.navigate('View Deck', {
+              navigation.navigate("View Deck", {
                 deckId,
               });
             }}
@@ -43,10 +46,11 @@ const FinalScore = ({
         <View
           style={{
             marginTop: 10,
-          }}>
+          }}
+        >
           <Button
             onPress={() =>
-              navigation.navigate('Start Quiz', {
+              navigation.navigate("Start Quiz", {
                 deckId,
               })
             }

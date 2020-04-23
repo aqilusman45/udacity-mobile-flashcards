@@ -65,11 +65,11 @@ const NOTIFICATIONS_STORAGE_KEY = "UdaciCards:notifications";
 
 export const clearLocalNotification = () => {
   return AsyncStorage.removeItem(NOTIFICATIONS_STORAGE_KEY).then(
-    Notifications.cancelScheduledNotificationAsync
+    Notifications.cancelAllScheduledNotificationsAsync
   );
 };
 
-const createNotification = async () => {
+const createNotification = () => {
   return {
     title: "Ready to learn?",
     body: "👋 atempt atleast one quiz today!",
@@ -78,6 +78,7 @@ const createNotification = async () => {
     },
     android: {
       sound: true,
+      title: "Ready to learn?",
       priority: "high",
       sticky: false,
       vibrate: true,
@@ -86,19 +87,14 @@ const createNotification = async () => {
 };
 
 export const setLocalNotifications = async () => {
-  console.log("calling notification");
-
   const data = JSON.parse(
     await AsyncStorage.getItem(NOTIFICATIONS_STORAGE_KEY)
   );
-  console.log("data", data);
-
   if (data === null) {
     Permissions.askAsync(Permissions.NOTIFICATIONS)
       .then(({ status }) => {
-        console.log("status", status);
         if (status === "granted") {
-          Notifications.cancelScheduledNotificationAsync();
+          Notifications.cancelAllScheduledNotificationsAsync();
 
           let tomorrow = new Date();
           tomorrow.setDate(tomorrow.getDate() + 1);
