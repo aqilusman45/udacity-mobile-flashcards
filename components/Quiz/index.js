@@ -1,15 +1,17 @@
 import React, { useState, useEffect } from "react";
-import { Alert, Button, View } from "react-native";
+import { Alert } from "react-native";
 import {
   Text,
   ContentTextWrapperCenter,
   ContentWrapperCenter,
+  GlobalBtn,
 } from "../Globals";
 import { connect } from "react-redux";
 import {
   clearLocalNotification,
   setLocalNotifications,
 } from "../../utils/helpers";
+import NoCards from "../No_Cards";
 
 const Quiz = ({ rootNavigation, deck, rootRoute, navigation, dispatch }) => {
   const [currentIndex, setIndex] = useState(0);
@@ -60,24 +62,7 @@ const Quiz = ({ rootNavigation, deck, rootRoute, navigation, dispatch }) => {
   }, [isLast, score, navigation]);
 
   if (questions.length === 0) {
-    return (
-      <ContentWrapperCenter>
-        <ContentTextWrapperCenter>
-          <Text
-            style={{
-              textAlign: "center",
-              paddingLeft: 20,
-              paddingRight: 20,
-            }}
-            color="black"
-            size="20px"
-          >
-            Sorry, you cannot take a quiz because there are no cards in this
-            deck.
-          </Text>
-        </ContentTextWrapperCenter>
-      </ContentWrapperCenter>
-    );
+    return <NoCards />;
   }
 
   return (
@@ -114,27 +99,21 @@ const Quiz = ({ rootNavigation, deck, rootRoute, navigation, dispatch }) => {
         >
           View Answer
         </Text>
-        <View
+        <GlobalBtn
           style={{
             marginTop: 10,
           }}
-        >
-          <Button
-            onPress={() => handleAnswer("correct")}
-            title="  Correct   "
-          />
-        </View>
-        <View
+          title="  Correct   "
+          callBack={() => handleAnswer("correct")}
+        />
+        <GlobalBtn
           style={{
             marginTop: 10,
           }}
-        >
-          <Button
-            onPress={() => handleAnswer()}
-            color="black"
-            title="Incorrect"
-          />
-        </View>
+          color="black"
+          title="Incorrect"
+          callBack={handleAnswer}
+        />
       </ContentTextWrapperCenter>
     </ContentWrapperCenter>
   );
