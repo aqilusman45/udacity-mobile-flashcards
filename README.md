@@ -42,7 +42,6 @@ Notification helper functions can be found in `./utils/helpers.js`. `App.js` com
 
 8. Once the server is running you can scan the QR code from the cli to view the app on your smartphone.
 
-9.
 
 ### References
 
