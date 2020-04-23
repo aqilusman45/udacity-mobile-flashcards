@@ -23,7 +23,7 @@ const Quiz = ({ rootNavigation, deck, rootRoute, navigation, dispatch }) => {
       setScore(0);
     });
     return unsubscribe;
-  }, [navigation]);
+  }, []);
 
   rootNavigation.setOptions({
     tabBarVisible: false,
